@@ -52,21 +52,23 @@ UserSchema.methods.matchPassword = async function (password) {
 
 // generate jwt token
 UserSchema.methods.getSingedToken = async function (res) {
-    const accessToken = jwt.sign(
+    const accessToken = await jwt.sign(
         { id: this._id },
         process.env.JWT_ACCESS_SECRETE,
         { expiresIn: process.env.JWT_ACCESS_EXPIRESIN }
     );
 
-    const refreshToken = jwt.sign(
+    const refreshToken = await jwt.sign(
         { id: this._id },
         process.env.JWT_REFRESH_TOKEN,
-        { expiresIn: JWT_REFRESH_EXPIRESIN }
+        { expiresIn: process.env.JWT_REFRESH_EXPIRESIN }
     );
 
     res.cookie("refreshToken", `${refreshToken}`, {
         maxAge: 86400 * 7000,
         httpOnly: true,
     });
+
+    return accessToken;
 };
 module.exports = User = mongoose.model("User", UserSchema);

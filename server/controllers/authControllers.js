@@ -17,7 +17,7 @@ const registerUserController = async (req, res, next) => {
             password
         })
 
-        sendToken(user, 201, res)
+        sendToken(user, res)
     } catch (error) {
         console.log(error)
         next(error)
@@ -37,14 +37,14 @@ const loginUserController = async (req, res, next) => {
             return next(new ErrorResponse('User not resgistered please sign up', 404))
         }
 
-        const isMatched = await User.matchPassword(password)
+        const isMatched = await user.matchPassword(password)
 
         if (!isMatched) {
 
             return next('Incorrect Email Or Password', 401)
         }
 
-        sendToken(req, res)
+        sendToken(user, res)
 
     } catch (error) {
         console.log(error)
@@ -60,8 +60,8 @@ const logoutUserController = (req, res) => {
     })
 }
 
-const sendToken = (req, res) => {
-    const token = User.getSingedToken(res);
+const sendToken = async (user, res) => {
+    const token = await user.getSingedToken(res);
     res.status(200).json({
         success: true,
         token
