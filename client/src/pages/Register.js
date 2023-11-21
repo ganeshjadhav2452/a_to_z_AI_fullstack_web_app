@@ -28,7 +28,7 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post("/api/v1/auth/register", { userName, email, password });
+            await axios.post("https://a-to-z-ai-production.vercel.app/api/v1/auth/register", { userName, email, password });
             toast.success("User Register Successfully");
             navigate("/login");
         } catch (err) {

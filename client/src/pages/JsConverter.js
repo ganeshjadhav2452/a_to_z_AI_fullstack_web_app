@@ -28,7 +28,7 @@ const JsConverter = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const { data } = await axios.post("/api/v1/openai/js-converter", {
+            const { data } = await axios.post("https://a-to-z-ai-production.vercel.app/api/v1/openai/js-converter", {
                 text,
             });
             console.log(data);
