@@ -6,6 +6,7 @@ const connectDatabase = require('./configs/database')
 const authRoutes = require('./router/authRoutes')
 const openAiRoutes = require('./router/openAiRoutes')
 const errorHandler = require('./middlewares/errorMiddleware')
+const path = require('path')
 // connecting database
 connectDatabase()
 
@@ -16,6 +17,14 @@ app.use(cors())
 app.use(express.json())
 app.use(morgan('dev'))
 app.use(errorHandler)
+
+//deployment code 
+
+app.use(express.static(path.join(__dirname, './client/build')))
+
+app.use('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '/client/build/index.html'))
+})
 
 
 // REST API Routes
